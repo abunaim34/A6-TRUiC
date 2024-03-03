@@ -10,14 +10,27 @@ const dataLoad = () => {
 }
 
 const displayPosts = (posts) =>{
-    console.log(posts)
+    // console.log(posts)
+    handleSpinner("none")
+    // setTimeout("none")
     const allPostContainer = document.getElementById('post-container')
+    allPostContainer.textContent = ''
     posts.forEach(post =>{
         console.log(post)
+        let activity = ''
+        if(post.isActive){
+            activity = `
+            <div class="avatar offline w-20 h-20 pl-4 pt-4">
+            <div class="w-24">
+            <img class=" rounded-2xl" src="${post.image}" />
+            </div>
+            </div>
+            `;
+        }
         const postCard = document.createElement('div')
-        postCard.classList = `flex flex-col lg:flex-row bg-[#F3F3F5] lg:w-[702px] rounded-2xl`
+        postCard.classList = `flex flex-row bg-[#F3F3F5] lg:w-[702px] rounded-2xl`
         postCard.innerHTML = `
-        <div class="avatar online w-20 h-20 pl-4 pt-4">
+        <div class="avatar offline w-20 h-20 pl-4 pt-4">
         <div class="w-24">
           <img class=" rounded-2xl" src="${post.image}" />
         </div>
@@ -32,9 +45,9 @@ const displayPosts = (posts) =>{
                 <p class="lg:w-[520px] pt-4">${post.description} </p>
                 <div class="flex justify-between items-center mt-6 mb-11">
                     <div class="flex items-center mt-6 gap-2 lg:gap-7">
-                        <div><i class="fa-solid fa-message"></i><span class="pl-3">${post.comment_count}</span></div>
-                        <div><i class="fa-regular fa-eye"></i><span class="pl-3">${post.view_count}</span></div>
-                        <div><i class="fa-regular fa-clock"></i><span class="pl-3">${post.posted_time}</span> Min</div>
+                        <div><i class="fa-solid fa-message"></i><span class="lg:pl-3">${post.comment_count}</span></div>
+                        <div><i class="fa-regular fa-eye"></i><span class="lg:pl-3">${post.view_count}</span></div>
+                        <div><i class="fa-regular fa-clock"></i><span class="lg:pl-3">${post.posted_time}</span> Min</div>
                     </div>
                     <div class="text-white ">
                         <i class="fa-regular fa-envelope bg-[#10B981] p-1 rounded-full"></i>
@@ -88,6 +101,40 @@ const displayLatestPost = (posts) => {
     })
 }
 
+const loadPostCategroy = (category) =>{
+    handleSpinner("block");
+    // setTimeout("block")
+    fetch(`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}`)
+       .then(res => res.json())
+       .then(data => {
+        // console.log(data.posts)
+        const posts = data.posts
+        // console.log(posts)
+        displayPosts(data.posts)
+       })
+}
+
+const handleSearch = () =>{
+    const searchField = document.getElementById('search-field');
+    const value = searchField.value
+    if(value){
+        loadPostCategroy(value)
+    }
+    else{
+        alert('Please enter valid string')
+    }
+}
+
+const handleSpinner = () => {
+    setTimeout(() =>{
+        document.getElementById('loading-spiner').style.display = status;
+    }, 2000)
+}
+
+
+
+
+loadPostCategroy()
 latestPostLoad()
 dataLoad()
 
