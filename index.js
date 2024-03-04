@@ -12,14 +12,13 @@ const dataLoad = () => {
 }
 
    const displayPosts = (posts) =>{
-        // console.log(time)
         const allPostContainer = document.getElementById('post-container')
         allPostContainer.textContent = ''
         posts.forEach(post =>{
             // console.log(post)
             let online = ""
             if(post.isActive){
-                online = `<div class="avatar online w-20 h-20 pl-4 pt-4">
+                online = `<div class="avatar online  w-20 h-20 pl-4 pt-4">
                 <div class="w-24">
                   <img class=" rounded-2xl" src="${post.image}" />
                 </div>
@@ -39,20 +38,21 @@ const dataLoad = () => {
     
             <div class="mt-5 px-3 pb-2">
                 <div class="space-x-4 mb-2 flex text-[#12132DCC]">
-                    <p># <span>${post.category}</span></p>
+                    <p class="flex"># <span>${post.category}</span></p>
                     <p> Author : <span>${post.author.name}</span></p>
                 </div>
                 <div class="">
                     <h3 id="post-title" class="text-xl font-bold">${post.title}</h3>
                     <p class="lg:w-[520px] pt-4">${post.description} </p>
-                    <div class="flex justify-between items-center mt-6 mb-11">
+                    
+                    <div class="flex justify-between items-center border-t-2 border-dashed mt-4 mb-11">
                         <div class="flex items-center mt-6 gap-2 lg:gap-7">
-                            <div><i class="fa-solid fa-message"></i><span class="lg:pl-3">${post.comment_count}</span></div>
-                            <div><i class="fa-regular fa-eye"></i><span id="view" class="lg:pl-3">${post.view_count}</span></div>
-                            <div><i class="fa-regular fa-clock"></i><span class="lg:pl-3">${post.posted_time}</span> Min</div>
+                            <div class="flex items-center"><i class="fa-solid fa-message"></i><span class="lg:pl-3">${post.comment_count}</span></div>
+                            <div class="flex items-center"><i class="fa-regular fa-eye"></i><span id="view" class="lg:pl-3">${post.view_count}</span></div>
+                            <div class="flex items-center"><i class="fa-regular fa-clock"></i><span class="lg:pl-3">${post.posted_time}</span> Min</div>
                         </div>
-                        <div  class="text-white pt-6">
-                            <button id="btn" onclick="getView('${post.title}','${post.view_count}')" class="btn"> <i class="fa-regular fa-envelope bg-[#10B981] p-1 rounded-full"></i></button>
+                        <div class="text-white pt-6">
+                            <button id="btn" onclick="handleBtn('${post.title}','${post.view_count}')" class="btn"> <i class="fa-regular fa-envelope bg-[#10B981] p-1 rounded-full"></i></button>
                         </div>
                     </div>
                 </div>
@@ -65,8 +65,8 @@ const dataLoad = () => {
     
 
 
-const getView = (title, view) =>{
-    console.log(title, view)
+const handleBtn = (title, view) =>{
+    // console.log(title, view)
 
     const countContainer = document.getElementById('count-container')
     const div = document.createElement('div')
@@ -75,7 +75,7 @@ const getView = (title, view) =>{
     h1.classList = 'font-semibold flex'
     const p = document.createElement('p')
     h1.innerText = title;
-    p.innerText = view;
+    p.innerHTML = `<div class="flex items-center"><i class="fa-regular fa-eye"></i><span id="view" class="lg:pl-1">${view}</span></div>`;
     div.appendChild(h1)
     div.appendChild(p)
     countContainer.appendChild(div)
@@ -100,7 +100,7 @@ const latestPostLoad = () => {
 }
 
 const displayLatestPost = (posts) => {
-    handleSpinner("none")
+    
     const latestPostContainer = document.getElementById('latest-post-container')
     posts.forEach(post =>{
         // console.log(post)
@@ -143,12 +143,9 @@ const displayLatestPost = (posts) => {
 }
 
 const loadPostCategroy = (category) =>{
-    // handleSpinner("block");
-    handleSpinner("block")
     fetch(`https://openapi.programming-hero.com/api/retro-forum/posts?category=${category}`)
        .then(res => res.json())
        .then(data => {
-        // console.log(data.posts)
         const posts = data.posts
         // console.log(posts)
         displayPosts(posts)
@@ -166,7 +163,6 @@ const handleSearch = () =>{
     }
 }
 
-// setTimeout(handleSpinner, 2000)
 const handleSpinner = (status) => {
         document.getElementById('loading-spiner').style.display = status;
 }
