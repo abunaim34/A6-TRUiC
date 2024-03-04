@@ -52,7 +52,7 @@ const dataLoad = () => {
                             <div class="flex items-center"><i class="fa-regular fa-clock"></i><span class="lg:pl-3">${post.posted_time}</span> Min</div>
                         </div>
                         <div class="text-white pt-6">
-                            <button id="btn" onclick="handleBtn('${post.title}','${post.view_count}')" class="btn"> <i class="fa-regular fa-envelope bg-[#10B981] p-1 rounded-full"></i></button>
+                            <button id="btn" onclick="handleBtn('${post.title.replace(/'/g, "title")}','${post.view_count}')" class="btn"> <i class="fa-regular fa-envelope bg-[#10B981] p-1 rounded-full"></i></button>
                         </div>
                     </div>
                 </div>
@@ -64,17 +64,18 @@ const dataLoad = () => {
     }
     
 
-
 const handleBtn = (title, view) =>{
     // console.log(title, view)
-
+    const subTitle = title.replace("title","");
+    // const title = subTitle.replace("title","")
+    // console.log(subTitle)
     const countContainer = document.getElementById('count-container')
     const div = document.createElement('div')
     div.classList = `flex bg-white rounded-3xl p-8`;
     const h1 = document.createElement('h1')
     h1.classList = 'font-semibold flex'
     const p = document.createElement('p')
-    h1.innerText = title;
+    h1.innerText = subTitle;
     p.innerHTML = `<div class="flex items-center"><i class="fa-regular fa-eye"></i><span id="view" class="lg:pl-1">${view}</span></div>`;
     div.appendChild(h1)
     div.appendChild(p)
